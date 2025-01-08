@@ -32,9 +32,11 @@ func main() {
 	_, err = conn.Read(buf)
 	mustNot(err, "Read msg error");
 
+	corelation_id := binary.BigEndian.Uint32(buf[8:])
+
 	responseBuf := make([]byte, 8)
 	binary.BigEndian.PutUint32(responseBuf[0:4], 0)
-	binary.BigEndian.PutUint32(responseBuf[4:8], 7)
+	binary.BigEndian.PutUint32(responseBuf[4:8], corelation_id)
 
 	_, err = conn.Write(responseBuf)
 	mustNot(err, "Write response error")
