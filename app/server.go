@@ -62,7 +62,7 @@ func main() {
 	*
 	*/
 	responseBuf := make([]byte, 16)
-	binary.BigEndian.PutUint32(responseBuf[0:4], 16) // message size
+	binary.BigEndian.PutUint32(responseBuf[0:4], 16-4) // message size = sizeof(Header)+sizeof(Body)
 	binary.BigEndian.PutUint32(responseBuf[4:8], corelation_id)
 
 	error_code := uint16(35)  // code 35 means not supported
