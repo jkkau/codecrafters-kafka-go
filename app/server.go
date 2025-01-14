@@ -29,9 +29,11 @@ func main() {
 
 	l, err := net.Listen("tcp", "0.0.0.0:9092")
 	mustNot(err, "Failed to bind to port 9092")
+	defer l.Close()
 
 	conn, err := l.Accept()
 	mustNot(err, "Accept error")
+	defer conn.Close()
 
 	var req Request
 	err = binary.Read(conn, binary.BigEndian, &req)
