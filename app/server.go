@@ -49,8 +49,8 @@ func main() {
 	// construct response
 	// https://kafka.apache.org/protocol.html#The_Messages_ApiVersions
 	// https://forum.codecrafters.io/t/question-about-handle-apiversions-requests-stage/1743/5
-	responseBuf := make([]byte, 27)
-	binary.BigEndian.PutUint32(responseBuf[0:4], 27-4) // message size = sizeof(Header)+sizeof(Body)
+	responseBuf := make([]byte, 30)
+	binary.BigEndian.PutUint32(responseBuf[0:4], 30-4) // message size = sizeof(Header)+sizeof(Body)
 	binary.BigEndian.PutUint32(responseBuf[4:8], corelation_id)
 
 	error_code := uint16(35) // code 35 means not supported
@@ -68,12 +68,13 @@ func main() {
 	binary.BigEndian.PutUint16(responseBuf[11:], 18) // api_key APIVersions
 	binary.BigEndian.PutUint16(responseBuf[13:], 0)  // min_version
 	binary.BigEndian.PutUint16(responseBuf[15:], 4)  // max_version
-	binary.BigEndian.PutUint16(responseBuf[17:], 75) // api_key DescribeTopicPartitions
-	binary.BigEndian.PutUint16(responseBuf[19:], 0)  // min_version
-	binary.BigEndian.PutUint16(responseBuf[21:], 0)  // max_version
-	responseBuf[23] = 0                              // _tagged_fields
-	binary.BigEndian.PutUint16(responseBuf[14:], 0)  // throttle_time_ms
-	responseBuf[26] = 0                              // _tagged_fields
+	responseBuf[17] = 0                              // _tagged_fields
+	binary.BigEndian.PutUint16(responseBuf[18:], 75) // api_key DescribeTopicPartitions
+	binary.BigEndian.PutUint16(responseBuf[20:], 0)  // min_version
+	binary.BigEndian.PutUint16(responseBuf[22:], 0)  // max_version
+	responseBuf[24] = 0                              // _tagged_fields
+	binary.BigEndian.PutUint32(responseBuf[25:], 0)  // throttle_time_ms
+	responseBuf[29] = 0                              // _tagged_fields
 
 	// send message
 	_, err = conn.Write(responseBuf)
